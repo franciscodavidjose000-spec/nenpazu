@@ -62,7 +62,7 @@ export function DiningSection({ onZoomPhoto }: DiningSectionProps) {
             {DINING_PHOTOS.map((photo) => (
               <figure
                 key={photo.id}
-                className="group bg-white border border-slate-200/80 rounded-sm overflow-hidden"
+                className="group bg-white border border-slate-200/80 rounded-sm overflow-hidden transition-all duration-200 hover:border-[#C5A059]/75 hover:shadow-[0_14px_30px_-14px_rgba(11,29,54,0.16)]"
               >
                 <button
                   type="button"
@@ -74,11 +74,15 @@ export function DiningSection({ onZoomPhoto }: DiningSectionProps) {
                     src={photo.src}
                     alt={photo.alt}
                     fallbackTitle={photo.title}
-                    className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.045]"
                   />
                   <span
                     aria-hidden="true"
-                    className="absolute top-3 right-3 w-9 h-9 rounded-sm bg-[#0B1D36]/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    className="absolute inset-0 bg-gradient-to-t from-[#061326]/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-3 right-3 w-9 h-9 rounded-sm bg-[#0B1D36]/85 text-white flex items-center justify-center opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200"
                   >
                     <Maximize2 className="w-4 h-4 text-[#D8B979]" />
                   </span>

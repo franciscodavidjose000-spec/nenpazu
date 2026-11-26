@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { CheckCircle2, ExternalLink, Info, MapPin, Phone, Send } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   HOTEL_CONTACT,
   INQUIRY_ROOM_LABELS,
@@ -39,6 +40,7 @@ export function ContactLocationSection({
   activeTab,
   onTabChange,
 }: ContactLocationSectionProps) {
+  const shouldReduceMotion = useReducedMotion();
   // Reservation inquiry state
   const [reservation, setReservation] = useState<ReservationInquiryInput>({
     name: '',
@@ -180,7 +182,7 @@ export function ContactLocationSection({
                   <div className="mt-4">
                     <a
                       href={HOTEL_CONTACT.phoneHref}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-semibold tracking-wider uppercase text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-colors whitespace-nowrap"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-semibold tracking-wider uppercase text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_22px_-12px_rgba(11,29,54,0.45)] active:translate-y-0 whitespace-nowrap"
                     >
                       <Phone className="w-4 h-4 text-[#C5A059]" aria-hidden="true" />
                       <span>Ligar agora ({HOTEL_CONTACT.phoneDisplay})</span>
@@ -237,13 +239,21 @@ export function ContactLocationSection({
                   aria-controls="panel-pedido-reserva"
                   id="tab-pedido-reserva"
                   onClick={() => onTabChange('reserva')}
-                  className={`flex-1 py-2.5 px-4 text-xs sm:text-sm font-semibold rounded-sm transition-colors duration-150 whitespace-nowrap cursor-pointer ${
+                  className={`relative flex-1 py-2.5 px-4 text-xs sm:text-sm font-semibold rounded-sm transition-colors duration-150 whitespace-nowrap cursor-pointer ${
                     activeTab === 'reserva'
-                      ? 'bg-[#0B1D36] text-white'
-                      : 'text-slate-600 hover:text-[#0B1D36]'
+                      ? 'text-white'
+                      : 'text-slate-600 hover:text-[#0B1D36] hover:bg-white/70'
                   }`}
                 >
-                  Pedido de Reserva
+                  {activeTab === 'reserva' && (
+                    <motion.span
+                      layoutId={shouldReduceMotion ? undefined : 'contact-tab-active'}
+                      transition={{ type: 'spring', stiffness: 360, damping: 30 }}
+                      className="absolute inset-0 bg-[#0B1D36] rounded-sm"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="relative z-10">Pedido de Reserva</span>
                 </button>
                 <button
                   type="button"
@@ -252,23 +262,37 @@ export function ContactLocationSection({
                   aria-controls="panel-formulario-contacto"
                   id="tab-formulario-contacto"
                   onClick={() => onTabChange('contacto')}
-                  className={`flex-1 py-2.5 px-4 text-xs sm:text-sm font-semibold rounded-sm transition-colors duration-150 whitespace-nowrap cursor-pointer ${
+                  className={`relative flex-1 py-2.5 px-4 text-xs sm:text-sm font-semibold rounded-sm transition-colors duration-150 whitespace-nowrap cursor-pointer ${
                     activeTab === 'contacto'
-                      ? 'bg-[#0B1D36] text-white'
-                      : 'text-slate-600 hover:text-[#0B1D36]'
+                      ? 'text-white'
+                      : 'text-slate-600 hover:text-[#0B1D36] hover:bg-white/70'
                   }`}
                 >
-                  Formulário de Contacto
+                  {activeTab === 'contacto' && (
+                    <motion.span
+                      layoutId={shouldReduceMotion ? undefined : 'contact-tab-active'}
+                      transition={{ type: 'spring', stiffness: 360, damping: 30 }}
+                      className="absolute inset-0 bg-[#0B1D36] rounded-sm"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="relative z-10">Formulário de Contacto</span>
                 </button>
               </div>
 
-              {/* Panel 1: Reservation Request Form */}
-              {activeTab === 'reserva' && (
-                <div
-                  role="tabpanel"
-                  id="panel-pedido-reserva"
-                  aria-labelledby="tab-pedido-reserva"
-                >
+              <AnimatePresence mode="wait">
+                {/* Panel 1: Reservation Request Form */}
+                {activeTab === 'reserva' && (
+                  <motion.div
+                    key="panel-reserva"
+                    role="tabpanel"
+                    id="panel-pedido-reserva"
+                    aria-labelledby="tab-pedido-reserva"
+                    initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
+                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  >
                   {submittedReservation ? (
                     <div
                       role="status"
@@ -345,13 +369,13 @@ export function ContactLocationSection({
                         <button
                           type="button"
                           onClick={handleResetReservation}
-                          className="px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-colors cursor-pointer"
+                          className="px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                         >
                           Fazer novo pedido
                         </button>
                         <a
                           href={HOTEL_CONTACT.phoneHref}
-                          className="px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#0B1D36] border border-slate-300 hover:border-[#0B1D36] rounded-sm transition-colors"
+                          className="px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#0B1D36] border border-slate-300 hover:border-[#0B1D36] rounded-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
                         >
                           Ligar para a recepção
                         </a>
@@ -610,23 +634,31 @@ export function ContactLocationSection({
 
                       <button
                         type="submit"
-                        className="w-full py-3.5 px-6 inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#0B1D36] bg-[#C5A059] hover:bg-[#D8B979] rounded-sm transition-colors duration-150 cursor-pointer"
+                        className="group w-full py-3.5 px-6 inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#0B1D36] bg-[#C5A059] hover:bg-[#D8B979] rounded-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-12px_rgba(197,160,89,0.55)] active:translate-y-0 cursor-pointer"
                       >
-                        <Send className="w-4 h-4" aria-hidden="true" />
+                        <Send
+                          className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          aria-hidden="true"
+                        />
                         <span>Enviar pedido de disponibilidade</span>
                       </button>
                     </form>
                   )}
-                </div>
-              )}
+                  </motion.div>
+                )}
 
-              {/* Panel 2: General Contact Form */}
-              {activeTab === 'contacto' && (
-                <div
-                  role="tabpanel"
-                  id="panel-formulario-contacto"
-                  aria-labelledby="tab-formulario-contacto"
-                >
+                {/* Panel 2: General Contact Form */}
+                {activeTab === 'contacto' && (
+                  <motion.div
+                    key="panel-contacto"
+                    role="tabpanel"
+                    id="panel-formulario-contacto"
+                    aria-labelledby="tab-formulario-contacto"
+                    initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
+                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  >
                   {submittedContactName ? (
                     <div
                       role="status"
@@ -655,7 +687,7 @@ export function ContactLocationSection({
                       <button
                         type="button"
                         onClick={() => setSubmittedContactName(null)}
-                        className="px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-colors cursor-pointer"
+                        className="px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                       >
                         Enviar outra mensagem
                       </button>
@@ -792,15 +824,19 @@ export function ContactLocationSection({
 
                       <button
                         type="submit"
-                        className="w-full py-3.5 px-6 inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-colors duration-150 cursor-pointer"
+                        className="group w-full py-3.5 px-6 inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold tracking-wider uppercase text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-12px_rgba(11,29,54,0.45)] active:translate-y-0 cursor-pointer"
                       >
-                        <Send className="w-4 h-4 text-[#C5A059]" aria-hidden="true" />
+                        <Send
+                          className="w-4 h-4 text-[#C5A059] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          aria-hidden="true"
+                        />
                         <span>Enviar mensagem</span>
                       </button>
                     </form>
                   )}
-                </div>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </MotionReveal>
         </div>

@@ -134,13 +134,21 @@ export function ServicesSection({ onZoomPhoto }: ServicesSectionProps) {
                   type="button"
                   onClick={() => setActiveFilter(option.id)}
                   aria-pressed={isActive}
-                  className={`px-3.5 py-2 text-xs font-medium rounded-sm transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer ${
+                  className={`relative px-3.5 py-2 text-xs font-medium rounded-sm transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer ${
                     isActive
-                      ? 'bg-[#0B1D36] text-white'
+                      ? 'text-white'
                       : 'text-slate-600 hover:text-[#0B1D36] hover:bg-white/70'
                   }`}
                 >
-                  {option.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId={shouldReduceMotion ? undefined : 'services-filter-active'}
+                      transition={{ type: 'spring', stiffness: 360, damping: 30 }}
+                      className="absolute inset-0 bg-[#0B1D36] rounded-sm"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="relative z-10">{option.label}</span>
                 </button>
               );
             })}
@@ -152,7 +160,7 @@ export function ServicesSection({ onZoomPhoto }: ServicesSectionProps) {
           {LEISURE_PHOTOS.map((photo) => (
             <figure
               key={photo.id}
-              className="group bg-[#F6F7F9] border border-slate-200/80 rounded-sm overflow-hidden flex flex-col"
+              className="group bg-[#F6F7F9] border border-slate-200/80 rounded-sm overflow-hidden flex flex-col transition-all duration-200 hover:border-[#C5A059]/75 hover:shadow-[0_14px_30px_-14px_rgba(11,29,54,0.16)]"
             >
               <button
                 type="button"
@@ -164,11 +172,15 @@ export function ServicesSection({ onZoomPhoto }: ServicesSectionProps) {
                   src={photo.src}
                   alt={photo.alt}
                   fallbackTitle={photo.title}
-                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+                  className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.045]"
                 />
                 <span
                   aria-hidden="true"
-                  className="absolute top-3 right-3 w-9 h-9 rounded-sm bg-[#0B1D36]/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  className="absolute inset-0 bg-gradient-to-t from-[#061326]/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute top-3 right-3 w-9 h-9 rounded-sm bg-[#0B1D36]/85 text-white flex items-center justify-center opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200"
                 >
                   <Maximize2 className="w-4 h-4 text-[#D8B979]" />
                 </span>

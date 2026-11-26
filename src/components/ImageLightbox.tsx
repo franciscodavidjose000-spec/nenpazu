@@ -49,7 +49,11 @@ export function ImageLightbox({
           className="fixed inset-0 z-50 bg-[#061326]/92 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
           onClick={onClose}
         >
-          <div
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="relative max-w-5xl w-full bg-[#0B1D36] border border-white/15 rounded-sm overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
@@ -75,14 +79,25 @@ export function ImageLightbox({
               </button>
             </div>
 
-            <div className="relative bg-[#061326] max-h-[72vh] flex items-center justify-center">
-              <ResilientImage
-                src={activePhoto.src}
-                alt={activePhoto.alt}
-                fallbackTitle={activePhoto.title}
-                loading="eager"
-                className="w-full max-h-[70vh] object-contain"
-              />
+            <div className="relative bg-[#061326] max-h-[72vh] flex items-center justify-center overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activePhoto.id}
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0.3, scale: 0.99 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0.3 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full flex items-center justify-center"
+                >
+                  <ResilientImage
+                    src={activePhoto.src}
+                    alt={activePhoto.alt}
+                    fallbackTitle={activePhoto.title}
+                    loading="eager"
+                    className="w-full max-h-[70vh] object-contain"
+                  />
+                </motion.div>
+              </AnimatePresence>
 
               {photos.length > 1 && (
                 <>
@@ -92,7 +107,7 @@ export function ImageLightbox({
                       onNavigate((activeIndex - 1 + photos.length) % photos.length)
                     }
                     aria-label="Fotografia anterior"
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-sm bg-[#0B1D36]/80 hover:bg-[#0B1D36] text-white border border-white/20 flex items-center justify-center transition-colors cursor-pointer"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-sm bg-[#0B1D36]/80 hover:bg-[#0B1D36] text-white border border-white/20 hover:border-[#C5A059] flex items-center justify-center transition-all duration-150 hover:scale-105 cursor-pointer"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
@@ -100,14 +115,14 @@ export function ImageLightbox({
                     type="button"
                     onClick={() => onNavigate((activeIndex + 1) % photos.length)}
                     aria-label="Fotografia seguinte"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-sm bg-[#0B1D36]/80 hover:bg-[#0B1D36] text-white border border-white/20 flex items-center justify-center transition-colors cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-sm bg-[#0B1D36]/80 hover:bg-[#0B1D36] text-white border border-white/20 hover:border-[#C5A059] flex items-center justify-center transition-all duration-150 hover:scale-105 cursor-pointer"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
                 </>
               )}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

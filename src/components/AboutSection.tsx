@@ -16,22 +16,26 @@ export function AboutSection({ onZoomPhoto }: AboutSectionProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-stretch">
           {/* Photography Column: Real Hotel Facade */}
           <MotionReveal className="lg:col-span-6 flex flex-col">
-            <figure className="h-full flex flex-col border border-slate-200/80 rounded-sm overflow-hidden bg-[#F6F7F9]">
+            <figure className="group h-full flex flex-col border border-slate-200/80 rounded-sm overflow-hidden bg-[#F6F7F9] transition-colors duration-200 hover:border-[#C5A059]/70">
               <button
                 type="button"
                 onClick={() => onZoomPhoto(facadePhoto)}
                 aria-label={`Ampliar fotografia: ${facadePhoto.title}`}
-                className="group relative flex-1 min-h-[280px] sm:min-h-[360px] w-full overflow-hidden text-left cursor-pointer"
+                className="relative flex-1 min-h-[280px] sm:min-h-[360px] w-full overflow-hidden text-left cursor-pointer"
               >
                 <ResilientImage
                   src={facadePhoto.src}
                   alt={facadePhoto.alt}
                   fallbackTitle={facadePhoto.title}
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+                  className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 />
                 <span
                   aria-hidden="true"
-                  className="absolute top-3 right-3 w-9 h-9 rounded-sm bg-[#0B1D36]/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  className="absolute inset-0 bg-gradient-to-t from-[#061326]/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute top-3 right-3 w-9 h-9 rounded-sm bg-[#0B1D36]/85 text-white flex items-center justify-center opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200"
                 >
                   <Maximize2 className="w-4 h-4 text-[#D8B979]" />
                 </span>

@@ -60,10 +60,13 @@ export function ConferenceSection({ onSelectConferenceRoom }: ConferenceSectionP
                     type="button"
                     onClick={() => onSelectConferenceRoom(room.id)}
                     aria-label={`Solicitar informações e reserva para ${room.name}`}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-xs font-semibold tracking-wider uppercase text-[#0B1D36] bg-[#C5A059] hover:bg-[#D8B979] rounded-sm transition-colors duration-150 whitespace-nowrap cursor-pointer"
+                    className="group/btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-xs font-semibold tracking-wider uppercase text-[#0B1D36] bg-[#C5A059] hover:bg-[#D8B979] rounded-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_10px_24px_-8px_rgba(197,160,89,0.5)] whitespace-nowrap cursor-pointer"
                   >
                     <span>Solicitar informações e reserva</span>
-                    <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                    <ArrowUpRight
+                      className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+                      aria-hidden="true"
+                    />
                   </button>
                 </div>
               </article>

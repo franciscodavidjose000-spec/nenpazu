@@ -28,7 +28,7 @@ export function RoomsSection({ onSelectRoom, onZoomPhoto }: RoomsSectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {ROOMS_DATA.map((room, index) => (
             <MotionReveal key={room.id} delay={index * 0.06} className="h-full">
-              <article className="group h-full flex flex-col bg-white border border-slate-200/90 rounded-sm overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:border-[#C5A059]/60">
+              <article className="group h-full flex flex-col bg-white border border-slate-200/90 rounded-sm overflow-hidden transition-all duration-200 hover:border-[#C5A059]/75 hover:shadow-[0_14px_30px_-14px_rgba(11,29,54,0.18)]">
                 {room.photo ? (
                   <button
                     type="button"
@@ -40,11 +40,15 @@ export function RoomsSection({ onSelectRoom, onZoomPhoto }: RoomsSectionProps) {
                       src={room.photo.src}
                       alt={room.photo.alt}
                       fallbackTitle={room.photo.title}
-                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+                      className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.045]"
                     />
                     <span
                       aria-hidden="true"
-                      className="absolute top-3 right-3 w-9 h-9 rounded-sm bg-[#0B1D36]/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      className="absolute inset-0 bg-gradient-to-t from-[#061326]/35 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-3 right-3 w-9 h-9 rounded-sm bg-[#0B1D36]/85 text-white flex items-center justify-center opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200"
                     >
                       <Maximize2 className="w-4 h-4 text-[#D8B979]" />
                     </span>
@@ -52,14 +56,14 @@ export function RoomsSection({ onSelectRoom, onZoomPhoto }: RoomsSectionProps) {
                 ) : (
                   <div className="aspect-[4/3] w-full bg-gradient-to-br from-[#0B1D36] via-[#132C4E] to-[#061326] flex flex-col items-center justify-center p-8 text-center border-b border-slate-200/80">
                     <BedDouble
-                      className="w-9 h-9 text-[#C5A059] mb-3"
+                      className="w-9 h-9 text-[#C5A059] mb-3 transition-transform duration-300 group-hover:scale-110"
                       strokeWidth={1.5}
                       aria-hidden="true"
                     />
                     <p className="font-serif text-2xl font-semibold tracking-wide text-white">
                       {room.name}
                     </p>
-                    <div className="w-10 h-[1px] bg-[#C5A059]/70 my-3" aria-hidden="true" />
+                    <div className="w-10 h-[1px] bg-[#C5A059]/70 my-3 transition-all duration-300 group-hover:w-14" aria-hidden="true" />
                     <p className="text-xs sm:text-sm text-white/75 max-w-xs leading-relaxed">
                       Categoria oficial do Hotel Nempanzu. Fotografia específica disponível
                       mediante solicitação à recepção.
@@ -98,10 +102,13 @@ export function RoomsSection({ onSelectRoom, onZoomPhoto }: RoomsSectionProps) {
                       type="button"
                       onClick={() => onSelectRoom(room.id)}
                       aria-label={`Consultar disponibilidade para ${room.name}`}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-xs font-semibold tracking-wider uppercase text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-colors duration-150 whitespace-nowrap cursor-pointer"
+                      className="group/btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-xs font-semibold tracking-wider uppercase text-white bg-[#0B1D36] hover:bg-[#132C4E] rounded-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap cursor-pointer"
                     >
                       <span>Consultar disponibilidade</span>
-                      <ArrowUpRight className="w-4 h-4 text-[#C5A059]" aria-hidden="true" />
+                      <ArrowUpRight
+                        className="w-4 h-4 text-[#C5A059] transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+                        aria-hidden="true"
+                      />
                     </button>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
 import { Menu, Phone, X } from 'lucide-react';
 import { HOTEL_CONTACT } from '../data/hotelData';
 
@@ -25,6 +25,12 @@ export function Navbar({ onRequestReservation }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 180,
+    damping: 28,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,7 +94,7 @@ export function Navbar({ onRequestReservation }: NavbarProps) {
           <button
             type="button"
             onClick={onRequestReservation}
-            className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold tracking-wider uppercase text-[#0B1D36] bg-[#C5A059] hover:bg-[#D8B979] rounded-sm transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer"
+            className="hidden lg:inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold tracking-wider uppercase text-[#0B1D36] bg-[#C5A059] hover:bg-[#D8B979] rounded-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:shadow-[0_6px_18px_-4px_rgba(197,160,89,0.5)] whitespace-nowrap shrink-0 cursor-pointer"
           >
             Solicitar reserva
           </button>
@@ -105,6 +111,16 @@ export function Navbar({ onRequestReservation }: NavbarProps) {
           </button>
         </div>
       </div>
+
+      {/* Discreet Reading Progress Bar */}
+      {!shouldReduceMotion && (
+        <motion.div
+          aria-hidden="true"
+          data-testid="reading-progress-bar"
+          style={{ scaleX: smoothProgress }}
+          className="h-[2px] w-full bg-gradient-to-r from-[#C5A059] via-[#D8B979] to-[#C5A059] origin-left pointer-events-none"
+        />
+      )}
 
       {/* Animated Mobile Navigation Drawer */}
       <AnimatePresence>
